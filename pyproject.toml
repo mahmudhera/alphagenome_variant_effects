@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ag-variant-effects"
+version = "0.1.0"
+description = "Batch REF/ALT AlphaGenome prediction and generic variant-effect summaries"
+requires-python = ">=3.9"
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=1.5",
+  "scipy>=1.10",
+  "torch>=2.0",
+]
+
+[project.scripts]
+ag-variant-effects = "ag_variant_effects.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+results/*
+!results/.gitkeep
+artifacts/*
+!artifacts/.gitkeep
+*.zip
+*.npy
+*.npz
+*.pt
+*.pth
+*.safetensors
