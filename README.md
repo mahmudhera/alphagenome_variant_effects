@@ -9,7 +9,7 @@ The CLI reads a CSV or TSV with sequence columns, runs predictions for each REF 
 1. `variant_effects.tsv`: per-track variant-effect summaries only.
 2. `all_predictions.zip`: all raw model predictions for REF and ALT sequences as `.npy` arrays inside a zip archive, plus a manifest.
 
-The repo includes a `mock` backend so you can test the I/O and output layout without model weights. To run real AlphaGenome predictions, install or vendor a PyTorch AlphaGenome implementation and place the model artifact under `artifacts/`.
+The repo includes a `mock` backend so we can test the I/O and output layout without model weights. To run real AlphaGenome predictions, install or vendor a PyTorch AlphaGenome implementation and place the model artifact under `artifacts/`.
 
 ## Repository layout
 
@@ -34,7 +34,7 @@ alphagenome_variant_effects_repo/
 
 ## Input format
 
-Input can be TSV or CSV. You choose the REF and ALT sequence column names at runtime.
+Input can be TSV or CSV. We choose the REF and ALT sequence column names at runtime.
 
 Example `examples/input.tsv`:
 
@@ -48,7 +48,7 @@ Sequences should be A/C/G/T. Ambiguous bases such as N are encoded as all-zero v
 
 ## Install this wrapper
 
-From the repo root, either install the wrapper without dependency resolution (useful when your environment already has PyTorch/NumPy/pandas/SciPy):
+From the repo root, either install the wrapper without dependency resolution (useful when the environment already has PyTorch/NumPy/pandas/SciPy):
 
 ```bash
 python -m pip install -e . --no-deps --no-build-isolation
@@ -122,7 +122,6 @@ The mock backend is only for checking input parsing, batching, scoring, and outp
 
 ## Run real AlphaGenome PyTorch inference
 
-```bash
 python -m ag_variant_effects \
   --backend alphagenome-pytorch \
   --weights artifacts/model_all_folds.safetensors \
