@@ -414,6 +414,7 @@ def main():
 
     n = len(ref_seqs)
 
+    iteration = 0
     for start in range(0, n, args.batch_size):
         end = min(start + args.batch_size, n)
 
@@ -461,6 +462,8 @@ def main():
                 raise RuntimeError("Feature names changed across batches")
 
         all_features.append(batch_features.detach().cpu())
+
+        print(f"Batch {iteration} complete. Remaining: {n - end} sequences...")
 
     features = torch.cat(all_features, dim=0).numpy()
 
