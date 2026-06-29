@@ -8,7 +8,6 @@ import numpy as np
 import torch
 
 from alphagenome_pytorch import AlphaGenome
-from alphagenome_pytorch.utils.sequence import sequence_to_onehot_tensor
 
 
 ALLOWED_MODALITIES = [
@@ -95,10 +94,29 @@ def make_onehot_batch(sequences: List[str], device: torch.device) -> torch.Tenso
     if len(sequences) == 0:
         raise ValueError("Empty sequence batch")
 
-    batch = torch.stack(
-        [sequence_to_onehot_tensor(seq) for seq in sequences],
-        dim=0,
+    # A: 0, C: 1, G: 2, T: 3, N: all zeros
+    base_to_idx = {
+        "A": 0,
+        "C": 1,
+        "G": 2,
+        "T": 3,
+    }
+
+    seq_len = len(sequences[0])
+
+    batch = torch.zeros(
+        (len(sequences), seq_len, 4),
+        dtype=torch.float32,
+        device=device,
     )
+
+    for i, seq in enumerate(sequences):
+        seq = seq.upper()
+        for j, base in enumerate(seq):
+            idx = base_to_idx.get(base)
+            if idx is not None:
+                batch[i, j, idx] = 1.0
+            # N or unknown bases remain all zeros
 
     return batch.to(device)
 
@@ -411,6 +429,7 @@ def main():
         batch_ref = make_onehot_batch(batch_ref_seqs, device=device)
         batch_alt = make_onehot_batch(batch_alt_seqs, device=device)
 
+        print(batch_ref)
         preds_ref = predict_batch(
             model,
             batch_ref,
@@ -465,6 +484,7 @@ def main():
 
     print(f"Saved features to: {output_path}")
     print(f"Final feature matrix shape: {features.shape}")
+    print(features)
 
 
 if __name__ == "__main__":
