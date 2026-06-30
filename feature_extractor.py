@@ -430,7 +430,6 @@ def main():
         batch_ref = make_onehot_batch(batch_ref_seqs, device=device)
         batch_alt = make_onehot_batch(batch_alt_seqs, device=device)
 
-        print(batch_ref)
         preds_ref = predict_batch(
             model,
             batch_ref,
