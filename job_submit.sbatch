@@ -20,12 +20,12 @@ export PYTHONPATH=$(pwd)
 
 CMD=(
 	python feature_extractor.py \
-        --ref-fasta toy_ref.fa \
-        --alt-fasta toy_alt.fa \
-        --weights artifacts/model_all_folds.safetensors \
-        --output variant_features.tsv \
-        --batch-size 8 \
-        --device cpu
+    --ref-fasta /projectsp/f_ak1833_1/Mahmudur/files_to_predict/MPAC_emvar_K562_refs.fa \
+    --alt-fasta /projectsp/f_ak1833_1/Mahmudur/files_to_predict/MPAC_emvar_K562_alts.fa \
+    --weights artifacts/model_all_folds.safetensors \
+    --output MPAC_emvar_K562_alphagenome_diff_features.tsv \
+    --batch-size 32 \
+    --device cpu
 )
 
 echo "===== JOB COMMAND ====="
