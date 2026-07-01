@@ -176,7 +176,13 @@ def evaluate_model(model, X, y, split_name):
 
     print(f"{split_name} RMSE: {rmse:.6f}")
 
-    return pred, rmse
+    # also compute correlation pearson and spearman
+    pearson_corr = np.corrcoef(y, pred)[0, 1]
+    spearman_corr = pd.Series(y).corr(pd.Series(pred), method="spearman")
+    print(f"{split_name} Pearson correlation: {pearson_corr:.6f}")
+    print(f"{split_name} Spearman correlation: {spearman_corr:.6f}")
+
+    return pred, rmse, pearson_corr, spearman_corr
 
 
 def save_predictions(path, ids, y_true, y_pred):
@@ -224,9 +230,9 @@ def main():
 
     model = train_model(X_train, y_train, X_val, y_val, args)
 
-    train_pred, train_rmse = evaluate_model(model, X_train, y_train, "Train")
-    val_pred, val_rmse = evaluate_model(model, X_val, y_val, "Validation")
-    test_pred, test_rmse = evaluate_model(model, X_test, y_test, "Test")
+    train_pred, train_rmse, train_pearson, train_spearman = evaluate_model(model, X_train, y_train, "Train")
+    val_pred, val_rmse, val_pearson, val_spearman = evaluate_model(model, X_val, y_val, "Validation")
+    test_pred, test_rmse, test_pearson, test_spearman = evaluate_model(model, X_test, y_test, "Test")
 
     model_path = os.path.join(args.output_dir, "xgboost_model.json")
     model.save_model(model_path)
@@ -256,6 +262,8 @@ def main():
         {
             "split": ["train", "validation", "test"],
             "rmse": [train_rmse, val_rmse, test_rmse],
+            "pearson": [train_pearson, val_pearson, test_pearson],
+            "spearman": [train_spearman, val_spearman, test_spearman],
         }
     )
 
