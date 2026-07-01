@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=AGHEPG2
+#SBATCH --job-name=AGSKNSH
 #SBATCH --mem=48G
 #SBATCH --time=24:00:00
 
-#SBATCH --output=logs/AGHEPG2.out
-#SBATCH --error=logs/AGHEPG2.err
+#SBATCH --output=logs/AGSKNSH.out
+#SBATCH --error=logs/AGSKNSH.err
 
 # Optional but recommended
 #SBATCH --partition=main-redhat
@@ -20,10 +20,10 @@ export PYTHONPATH=$(pwd)
 
 CMD=(
 	python feature_extractor.py \
-    --ref-fasta /projectsp/f_ak1833_1/Mahmudur/files_to_predict/MPAC_emvar_HEPG2_refs.fa \
-    --alt-fasta /projectsp/f_ak1833_1/Mahmudur/files_to_predict/MPAC_emvar_HEPG2_alts.fa \
+    --ref-fasta /home/mr2320/malinois_inference_minimal/data/MPAC_emvar_SKNSH_refs.fa \
+    --alt-fasta /home/mr2320/malinois_inference_minimal/data/MPAC_emvar_SKNSH_alts.fa \
     --weights artifacts/model_all_folds.safetensors \
-    --output MPAC_emvar_HEPG2_alphagenome_diff_features.tsv \
+    --output MPAC_emvar_SKNSH_alphagenome_diff_features.tsv \
     --batch-size 32 \
     --device cpu
 )
