@@ -33,3 +33,53 @@ python feature_extractor.py \
     --output MPAC_emvar_SKNSH_alphagenome_diff_features.tsv \
     --batch-size 32 \
     --device cpu
+
+
+# MPRAVARDB ref alt locations:
+# K562: /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-K562-refs.fa, /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-K562-alts.fa
+# HepG2: /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-HEPG2-refs.fa, /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-HEPG2-alts.fa
+# SKNSH: /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-SKNSH-refs.fa, /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-SKNSH-alts.fa
+
+
+# extract features for MPRAVARDB K562
+python feature_extractor.py \
+    --ref-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-K562-refs.fa \
+    --alt-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-K562-alts.fa \
+    --weights artifacts/model_all_folds.safetensors \
+    --output MPRAVARDB_K562_alphagenome_diff_features.tsv \
+    --batch-size 32 \
+    --device cpu
+
+# extract features for MPRAVARDB HEPG2
+python feature_extractor.py \
+    --ref-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-HEPG2-refs.fa \
+    --alt-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-HEPG2-alts.fa \
+    --weights artifacts/model_all_folds.safetensors \
+    --output MPRAVARDB_HEPG2_alphagenome_diff_features.tsv \
+    --batch-size 32 \
+    --device cpu
+
+
+# extract features for MPRAVARDB SKNSH
+python feature_extractor.py \
+    --ref-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-SKNSH-refs.fa \
+    --alt-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-SKNSH-alts.fa \
+    --weights artifacts/model_all_folds.safetensors \
+    --output MPRAVARDB_SKNSH_alphagenome_diff_features.tsv \
+    --batch-size 32 \
+    --device cpu
+
+
+# train xgboost model using K562 data
+python xgboost_train_and_test.py \
+  --feature-file MPAC_emvar_K562_alphagenome_diff_features.tsv \
+  --target-file /home/mr2320/malinois_inference_minimal/data/MPAC_emvar_K562_combined.tsv \
+  --output-dir xgb_results_mpac_emvar_k562 \
+  --feature-id-col id \
+  --target-id-col variant \
+  --target-col log2FC_skew \
+  --n-estimators 100 \
+  --max-depth 5 \
+  --learning-rate 0.03 \
+  --early-stopping-rounds 10 \
+  --n-jobs 1
