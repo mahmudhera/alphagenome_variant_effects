@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=AGHEPG2MPRAVARDB
+#SBATCH --job-name=AGSKNSHMPRAVARDB
 #SBATCH --mem=48G
 #SBATCH --time=24:00:00
 
-#SBATCH --output=logs/AGHEPG2MPRAVARDB.out
-#SBATCH --error=logs/AGHEPG2MPRAVARDB.err
+#SBATCH --output=logs/AGSKNSHMPRAVARDB.out
+#SBATCH --error=logs/AGSKNSHMPRAVARDB.err
 
 # Optional but recommended
 #SBATCH --partition=main-redhat
@@ -20,10 +20,10 @@ export PYTHONPATH=$(pwd)
 
 CMD=(
 	python feature_extractor.py \
-    --ref-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-HEPG2-refs.fa \
-    --alt-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-HEPG2-alts.fa \
+    --ref-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-SKNSH-refs.fa \
+    --alt-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-SKNSH-alts.fa \
     --weights artifacts/model_all_folds.safetensors \
-    --output MPRAVARDB_HEPG2_alphagenome_diff_features.tsv \
+    --output MPRAVARDB_SKNSH_alphagenome_diff_features.tsv \
     --batch-size 32 \
     --device cpu
 )
