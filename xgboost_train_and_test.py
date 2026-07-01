@@ -141,8 +141,6 @@ def split_data(X, y, ids, args):
 
 
 def train_model(X_train, y_train, X_val, y_val, args):
-    """Train XGBoost model using validation data for early stopping."""
-
     model = xgb.XGBRegressor(
         n_estimators=args.n_estimators,
         max_depth=args.max_depth,
@@ -156,6 +154,7 @@ def train_model(X_train, y_train, X_val, y_val, args):
         eval_metric="rmse",
         random_state=args.seed,
         n_jobs=args.n_jobs,
+        early_stopping_rounds=args.early_stopping_rounds,
     )
 
     model.fit(
@@ -163,7 +162,6 @@ def train_model(X_train, y_train, X_val, y_val, args):
         y_train,
         eval_set=[(X_val, y_val)],
         verbose=True,
-        early_stopping_rounds=args.early_stopping_rounds,
     )
 
     return model
