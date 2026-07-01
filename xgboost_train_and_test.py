@@ -171,7 +171,8 @@ def evaluate_model(model, X, y, split_name):
     """Evaluate RMSE on a given split."""
 
     pred = model.predict(X)
-    rmse = mean_squared_error(y, pred, squared=False)
+    mse = mean_squared_error(y, pred)
+    rmse = np.sqrt(mse)
 
     print(f"{split_name} RMSE: {rmse:.6f}")
 
