@@ -1,10 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=AGSKNSHMPRAVARDB
+#SBATCH --job-name=xgboost_mpac_emvar_hepg2
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
 #SBATCH --mem=48G
 #SBATCH --time=24:00:00
 
-#SBATCH --output=logs/AGSKNSHMPRAVARDB.out
-#SBATCH --error=logs/AGSKNSHMPRAVARDB.err
+#SBATCH --output=logs/xgboost_mpac_emvar_hepg2.out
+#SBATCH --error=logs/xgboost_mpac_emvar_hepg2.err
 
 # Optional but recommended
 #SBATCH --partition=main-redhat
@@ -15,17 +17,22 @@ mkdir -p logs
 # Make stdout line-buffered / unbuffered
 export PYTHONUNBUFFERED=1
 
-source activate alphagenome
+source activate malinois_inference
 export PYTHONPATH=$(pwd)
 
 CMD=(
-	python feature_extractor.py \
-    --ref-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-SKNSH-refs.fa \
-    --alt-fasta /home/mr2320/malinois_inference_minimal/data/MPRAVARDB-SKNSH-alts.fa \
-    --weights artifacts/model_all_folds.safetensors \
-    --output MPRAVARDB_SKNSH_alphagenome_diff_features.tsv \
-    --batch-size 32 \
-    --device cpu
+	python xgboost_train_and_test.py \
+        --feature-file MPAC_emvar_HEPG2_alphagenome_diff_features.tsv \
+        --target-file /home/mr2320/malinois_inference_minimal/data/MPAC_emvar_HEPG2_combined.tsv \
+        --output-dir xgb_results_mpac_emvar_hepg2 \
+        --feature-id-col id \
+        --target-id-col variant \
+        --target-col log2FC_skew \
+        --n-estimators 1000 \
+        --max-depth 5 \
+        --learning-rate 0.03 \
+        --early-stopping-rounds 100 \
+        --n-jobs 1
 )
 
 echo "===== JOB COMMAND ====="

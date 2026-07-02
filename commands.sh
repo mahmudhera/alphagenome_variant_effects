@@ -78,8 +78,41 @@ python xgboost_train_and_test.py \
   --feature-id-col id \
   --target-id-col variant \
   --target-col log2FC_skew \
-  --n-estimators 100 \
+  --n-estimators 1000 \
   --max-depth 5 \
   --learning-rate 0.03 \
-  --early-stopping-rounds 10 \
+  --early-stopping-rounds 100 \
   --n-jobs 1
+
+
+# train xgboost model using HEPG2 data
+python xgboost_train_and_test.py \
+  --feature-file MPAC_emvar_HEPG2_alphagenome_diff_features.tsv \
+  --target-file /home/mr2320/malinois_inference_minimal/data/MPAC_emvar_HEPG2_combined.tsv \
+  --output-dir xgb_results_mpac_emvar_hepg2 \
+  --feature-id-col id \
+  --target-id-col variant \
+  --target-col log2FC_skew \
+  --n-estimators 1000 \
+  --max-depth 5 \
+  --learning-rate 0.03 \
+  --early-stopping-rounds 100 \
+  --n-jobs 1
+
+
+# make predictions on MPAC_emvar_K562_alphagenome_diff_features.tsv
+python xgboost_make_predictions.py \
+  --model-file xgb_results_mpac_emvar_k562/xgboost_model.json \
+  --feature-file MPAC_emvar_K562_alphagenome_diff_features.tsv \
+  --target-file /home/mr2320/malinois_inference_minimal/data/MPAC_emvar_K562_combined.tsv \
+  --target-col log2FC_skew \
+  --output-file xgb_results_mpac_emvar_k562/MPAC_emvar_K562_predictions.tsv
+
+
+# make predictions on MPRAVARDB_K562_alphagenome_diff_features.tsv
+python xgboost_make_predictions.py \
+    --model-file xgb_results_mpac_emvar_k562/xgboost_model.json \
+    --feature-file MPRAVARDB_K562_alphagenome_diff_features.tsv \
+    --target-file /home/mr2320/malinois_inference_minimal/data/K562_processed.csv \
+    --target-col log2FC \
+    --output-file xgb_results_mpac_emvar_k562/MPRAVARDB_K562_predictions.tsv
