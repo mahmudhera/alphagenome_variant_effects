@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=xgboost_mpac_emvar_hepg2
+#SBATCH --job-name=xgboost_mpac_emvar_sknsh
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=48G
 #SBATCH --time=24:00:00
 
-#SBATCH --output=logs/xgboost_mpac_emvar_hepg2.out
-#SBATCH --error=logs/xgboost_mpac_emvar_hepg2.err
+#SBATCH --output=logs/xgboost_mpac_emvar_sknsh.out
+#SBATCH --error=logs/xgboost_mpac_emvar_sknsh.err
 
 # Optional but recommended
 #SBATCH --partition=main-redhat
@@ -22,9 +22,9 @@ export PYTHONPATH=$(pwd)
 
 CMD=(
 	python xgboost_train_and_test.py \
-        --feature-file MPAC_emvar_HEPG2_alphagenome_diff_features.tsv \
-        --target-file /home/mr2320/malinois_inference_minimal/data/MPAC_emvar_HEPG2_combined.tsv \
-        --output-dir xgb_results_mpac_emvar_hepg2 \
+        --feature-file MPAC_emvar_SKNSH_alphagenome_diff_features.tsv \
+        --target-file /home/mr2320/malinois_inference_minimal/data/MPAC_emvar_SKNSH_combined.tsv \
+        --output-dir xgb_results_mpac_emvar_sknsh \
         --feature-id-col id \
         --target-id-col variant \
         --target-col log2FC_skew \

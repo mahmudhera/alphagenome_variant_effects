@@ -99,6 +99,20 @@ python xgboost_train_and_test.py \
   --early-stopping-rounds 100 \
   --n-jobs 1
 
+# train xgboost model using SKNSH data
+python xgboost_train_and_test.py \
+  --feature-file MPAC_emvar_SKNSH_alphagenome_diff_features.tsv \
+  --target-file /home/mr2320/malinois_inference_minimal/data/MPAC_emvar_SKNSH_combined.tsv \
+  --output-dir xgb_results_mpac_emvar_sknsh \
+  --feature-id-col id \
+  --target-id-col variant \
+  --target-col log2FC_skew \
+  --n-estimators 1000 \
+  --max-depth 5 \
+  --learning-rate 0.03 \
+  --early-stopping-rounds 100 \
+  --n-jobs 1
+
 
 # make predictions on MPAC_emvar_K562_alphagenome_diff_features.tsv
 python xgboost_make_predictions.py \
